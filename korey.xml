@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<p:person p:id="1" xmlns:p="http://www.domoroboto.com">
+	<p:name>Korey</p:name>
+	<p:age>36</p:age>
+</p:person>
