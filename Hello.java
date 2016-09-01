@@ -17,8 +17,6 @@ import org.w3c.dom.Element;
 
 public class Hello {
 	public static void main(String[] args) {
-		String namespaceUri = "http://www.domoroboto.com";
-
 		Child audrey = new Child();
 		audrey.setName("Audrey");
 		audrey.setAge(1);
@@ -29,7 +27,7 @@ public class Hello {
 		korey.setId(27);
 		korey.getChildren().add(audrey);
 
-		marshalPerson(korey, "person-with-ns.xml", namespaceUri);
+		marshalPersonXPath(korey, "person-with-ns.xml");
 		marshalPerson(korey, "person-jaxb.xml");
 
 		Person p = unmarshalPerson("person.xml");
@@ -53,12 +51,19 @@ public class Hello {
 	
 	}
 
-	public static void marshalPerson(Person person, String fileName, String namespace) {
+	public static void marshalPersonXPath(Person person, String fileName) {
 		try {
 			XmlProcessor xmlProcessor = new XmlProcessor();
 			Document doc = xmlProcessor.newDocument();
 
-			Element personElement = person.createElementForDocument(doc);
+			SimpleNamespaceContext context = new SimpleNamespaceContext();
+
+			Element personElement = person.createElementForDocument(doc, context);
+			
+			for (SimpleNamespaceContext.Namespace ns : context.getNamespaces()) {
+				personElement.setAttribute("xmlns:" + ns.prefix, ns.namespaceURI); 
+			}
+
 			doc.appendChild(personElement);
 
 			xmlProcessor.transform(doc, fileName);	

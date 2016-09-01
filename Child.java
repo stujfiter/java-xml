@@ -21,17 +21,20 @@ public class Child {
 		return this.age;
 	}
 
-	public Element createElementForDocument(Document doc) {
+	public Element createElementForDocument(Document doc, SimpleNamespaceContext context) {
 
-		String namespace = "http://www.domoroboto.com/child";
+		SimpleNamespaceContext.Namespace namespace = context.addNamespace("http://www.domoroboto.com/child", "dc");
 		
-		Element childElement = doc.createElementNS(namespace, "dc:child");
+		String uri = namespace.namespaceURI;
+		String prefix = namespace.prefix;
 		
-		Element nameElement = doc.createElementNS(namespace, "dc:name");
+		Element childElement = doc.createElementNS(uri, prefix + ":child");
+		
+		Element nameElement = doc.createElementNS(uri, prefix + ":name");
 		nameElement.appendChild(doc.createTextNode(name));
 		childElement.appendChild(nameElement);
 
-		Element ageElement = doc.createElementNS(namespace, "dc:age");
+		Element ageElement = doc.createElementNS(uri, prefix + ":age");
 		ageElement.appendChild(doc.createTextNode(Integer.toString(age)));
 		childElement.appendChild(ageElement);
 

@@ -50,24 +50,27 @@ public class Person {
 		return children;
 	}	
 
-	public Element createElementForDocument(Document doc) {
-		String namespace = "http://www.domoroboto.com";
+	public Element createElementForDocument(Document doc, SimpleNamespaceContext context) {
 		
-		Element personElement = doc.createElementNS(namespace, "domo:person");
-		personElement.setAttribute("xmlns:domo", namespace);
-		personElement.setAttribute("domo:id", Integer.toString(id));
+		SimpleNamespaceContext.Namespace namespace = context.addNamespace("http://www.domoroboto.com", "domo");
+		String uri = namespace.namespaceURI;
+		String prefix = namespace.prefix;
+
+		Element personElement = doc.createElementNS(uri, prefix + ":person");
+		personElement.setAttribute("xmlns:" + prefix, uri);
+		personElement.setAttribute(prefix + ":id", Integer.toString(id));
 		
-		Element nameElement = doc.createElementNS(namespace, "domo:name");
+		Element nameElement = doc.createElementNS(uri, prefix + ":name");
 		nameElement.appendChild(doc.createTextNode(name));
 		personElement.appendChild(nameElement);
 
-		Element ageElement = doc.createElementNS(namespace, "domo:age");
+		Element ageElement = doc.createElementNS(uri, prefix + ":age");
 		ageElement.appendChild(doc.createTextNode(Integer.toString(age)));
 		personElement.appendChild(ageElement);
 
-		Element childrenElement = doc.createElementNS(namespace, "domo:children");
+		Element childrenElement = doc.createElementNS(uri, prefix + ":children");
 		for (Child c : children) {
-			Element childElement = c.createElementForDocument(doc);
+			Element childElement = c.createElementForDocument(doc, context);
 			childrenElement.appendChild(childElement);
 		}
 		personElement.appendChild(childrenElement);
