@@ -25,7 +25,7 @@ public class Hello {
 		korey.setId(27);
 
 		marshalPerson(korey, "person-with-ns.xml", namespaceUri);
-		marshalPerson(korey, "person.xml");
+		marshalPerson(korey, "person-jaxb.xml");
 
 		Person p = unmarshalPerson("person.xml");
 
@@ -62,16 +62,7 @@ public class Hello {
 			personElement.appendChild(nameElement);
 			doc.appendChild(personElement);
 
-			TransformerFactory tf = TransformerFactory.newInstance();
-			Transformer transformer = tf.newTransformer();
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-
-			BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-			StreamResult result = new StreamResult(writer);
-			DOMSource source = new DOMSource(doc);
-			transformer.transform(source, result);
-			
+			xmlProcessor.transform(doc, fileName);	
 
 		} catch (Exception e) {
 			e.printStackTrace();
