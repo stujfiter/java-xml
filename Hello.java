@@ -19,10 +19,15 @@ public class Hello {
 	public static void main(String[] args) {
 		String namespaceUri = "http://www.domoroboto.com";
 
+		Child audrey = new Child();
+		audrey.setName("Audrey");
+		audrey.setAge(1);
+
 		Person korey = new Person();
 		korey.setName("Korey");
 		korey.setAge(36);
 		korey.setId(27);
+		korey.getChildren().add(audrey);
 
 		marshalPerson(korey, "person-with-ns.xml", namespaceUri);
 		marshalPerson(korey, "person-jaxb.xml");

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,9 +13,11 @@ public class Person {
 
 	public static final String NAMESPACE = "http://www.domoroboto.com";
 
-	String name;
-	int age;
-	int id;
+	private String name;
+	private int age;
+	private int id;
+	private List<Child> children = new ArrayList<Child>();
+
 	
 	public String getName() {
 		return name;
@@ -42,20 +46,31 @@ public class Person {
 		this.id = id;
 	}
 
+	public List<Child> getChildren() {
+		return children;
+	}	
+
 	public Element createElementForDocument(Document doc) {
 		String namespace = "http://www.domoroboto.com";
 		
-		Element nameElement = doc.createElementNS(namespace, "domo:name");
-		nameElement.appendChild(doc.createTextNode(name));
-
-		Element ageElement = doc.createElementNS(namespace, "domo:age");
-		ageElement.appendChild(doc.createTextNode(Integer.toString(age)));
-
 		Element personElement = doc.createElementNS(namespace, "domo:person");
 		personElement.setAttribute("xmlns:domo", namespace);
 		personElement.setAttribute("domo:id", Integer.toString(id));
+		
+		Element nameElement = doc.createElementNS(namespace, "domo:name");
+		nameElement.appendChild(doc.createTextNode(name));
 		personElement.appendChild(nameElement);
+
+		Element ageElement = doc.createElementNS(namespace, "domo:age");
+		ageElement.appendChild(doc.createTextNode(Integer.toString(age)));
 		personElement.appendChild(ageElement);
+
+		Element childrenElement = doc.createElementNS(namespace, "domo:children");
+		for (Child c : children) {
+			Element childElement = c.createElementForDocument(doc);
+			childrenElement.appendChild(childElement);
+		}
+		personElement.appendChild(childrenElement);
 
 		return personElement;
 	}
