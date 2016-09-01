@@ -50,10 +50,8 @@ public class Hello {
 
 	public static void marshalPerson(Person person, String fileName, String namespace) {
 		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			dbf.setNamespaceAware(true);
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.newDocument();
+			XmlProcessor xmlProcessor = new XmlProcessor();
+			Document doc = xmlProcessor.newDocument();
 
 			Element nameElement = doc.createElementNS(namespace, "p:name");
 			nameElement.appendChild(doc.createTextNode(person.getName()));
