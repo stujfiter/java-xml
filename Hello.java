@@ -53,13 +53,7 @@ public class Hello {
 			XmlProcessor xmlProcessor = new XmlProcessor();
 			Document doc = xmlProcessor.newDocument();
 
-			Element nameElement = doc.createElementNS(namespace, "p:name");
-			nameElement.appendChild(doc.createTextNode(person.getName()));
-
-			Element personElement = doc.createElementNS(namespace, "p:person");
-			personElement.setAttribute("xmlns:p", namespace);
-			personElement.setAttribute("p:id", Integer.toString(person.getId()));
-			personElement.appendChild(nameElement);
+			Element personElement = person.createElementForDocument(doc);
 			doc.appendChild(personElement);
 
 			xmlProcessor.transform(doc, fileName);	
