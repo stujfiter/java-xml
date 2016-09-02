@@ -30,7 +30,7 @@ public class Hello {
 		marshalPersonXPath(korey, "person-with-ns.xml");
 		marshalPerson(korey, "person-jaxb.xml");
 
-		Person p = unmarshalPerson("person.xml");
+		Person p = unmarshalPerson("person-jaxb.xml");
 
 		System.out.println("Hello, " + p.getName() + "!");
 		

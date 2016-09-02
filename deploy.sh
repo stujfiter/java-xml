@@ -1,2 +1,2 @@
-javac -g Hello.java
-java Hello
+gradle build
+java -cp build/classes/main Hello
