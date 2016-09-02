@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -17,8 +16,7 @@ public class XmlProcessor {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
 		DocumentBuilder db = dbf.newDocumentBuilder();
-		Document doc = db.newDocument();
-		return doc;
+        return db.newDocument();
 	}
 
 	public void transform(Document doc, String fileName) throws Exception {

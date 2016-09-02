@@ -25,7 +25,7 @@ public class Child {
 
 		SimpleNamespaceContext.Namespace namespace = context.addNamespace("http://www.domoroboto.com/child", "dc");
 		
-		String uri = namespace.namespaceURI;
+		String uri = namespace.uri;
 		String prefix = namespace.prefix;
 		
 		Element childElement = doc.createElementNS(uri, prefix + ":child");

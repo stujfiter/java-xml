@@ -16,7 +16,7 @@ public class Person {
 	private String name;
 	private int age;
 	private int id;
-	private List<Child> children = new ArrayList<Child>();
+	private List<Child> children = new ArrayList<>();
 
 	
 	public String getName() {
@@ -53,7 +53,7 @@ public class Person {
 	public Element createElementForDocument(Document doc, SimpleNamespaceContext context) {
 		
 		SimpleNamespaceContext.Namespace namespace = context.addNamespace("http://www.domoroboto.com", "domo");
-		String uri = namespace.namespaceURI;
+		String uri = namespace.uri;
 		String prefix = namespace.prefix;
 
 		Element personElement = doc.createElementNS(uri, prefix + ":person");

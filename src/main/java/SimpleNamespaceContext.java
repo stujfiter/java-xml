@@ -23,11 +23,11 @@ public class SimpleNamespaceContext {
 	}
 
 	public class Namespace {
-		public final String namespaceURI;
+		public final String uri;
 		public final String prefix;
 
 		private Namespace(String namespaceURI, String prefix) {
-			this.namespaceURI = namespaceURI;
+			this.uri = namespaceURI;
 			this.prefix = prefix;
 		}
 	}

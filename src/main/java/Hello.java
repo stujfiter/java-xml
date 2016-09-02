@@ -1,17 +1,8 @@
 import java.io.File;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.OutputKeys;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -61,7 +52,7 @@ public class Hello {
 			Element personElement = person.createElementForDocument(doc, context);
 			
 			for (SimpleNamespaceContext.Namespace ns : context.getNamespaces()) {
-				personElement.setAttribute("xmlns:" + ns.prefix, ns.namespaceURI); 
+				personElement.setAttribute("xmlns:" + ns.prefix, ns.uri);
 			}
 
 			doc.appendChild(personElement);
