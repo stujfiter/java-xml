@@ -18,6 +18,25 @@ public class HelloCxf {
 
         SlideShow slideShow = new SlideShow();
         slideShow.setTitle("Brian and Korey");
+        slideShow.setAuthor("Tom Hanks");
+        slideShow.setDate("11/24/2016");
+
+        List<Slide> slides = new ArrayList<>();
+        Slide slide1 = new Slide();
+        slide1.setTitle("The First Slide to Rule Them All");
+        slide1.setType("all");
+        slides.add(slide1);
+
+        Slide slide2 = new Slide();
+        slide2.setTitle("Second the Best");
+        slide2.setType("NONE!");
+        List<String> items = new ArrayList<>();
+        items.add("This is my item!");
+        slide2.setItems(items);
+        slides.add(slide2);
+
+        slideShow.setSlides(slides);
+
         Response response = client.post(slideShow);
         System.out.println(response);
     }

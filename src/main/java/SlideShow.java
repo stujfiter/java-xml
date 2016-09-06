@@ -1,9 +1,8 @@
-import com.sun.deploy.xml.XMLNode;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import java.util.Collection;
 import java.util.List;
 
 public class SlideShow {
@@ -57,5 +56,23 @@ public class SlideShow {
 
     public void setSlides(List<Slide> slides) {
         this.slides = slides;
+    }
+
+    public Element createElementForDocument(Document doc, SimpleNamespaceContext context) {
+        SimpleNamespaceContext.Namespace namespace = context.addNamespace("http://www.domoroboto.com", "domo");
+        String uri = namespace.uri;
+        String prefix = namespace.prefix;
+
+        Element element = doc.createElementNS(uri, prefix + ":slideshow");
+        element.setAttribute("xmlns:" + prefix, uri);
+        element.setAttribute(prefix + ":title", title);
+        element.setAttribute(prefix + ":date", date);
+        element.setAttribute(prefix + ":author", author);
+
+        for (Slide slide: slides) {
+            element.appendChild(slide.createElementForDocument(doc, context));
+        }
+
+        return element;
     }
 }

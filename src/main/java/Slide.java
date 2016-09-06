@@ -1,3 +1,7 @@
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import java.util.ArrayList;
@@ -49,11 +53,35 @@ public class Slide {
             itemList = items;
         }
 
-        result.append("Title: " + title + " | Type: " + type + " | Item Count:" + itemList.size());
+        result.append("Title: ").append(title).append(" | Type: ").append(type).append(" | Item Count:").append(itemList.size());
 
         for (String item: itemList) {
-            result.append("\n\t\tItem - " + item);
+            result.append("\n\t\tItem - ").append(item);
         }
         return result.toString();
+    }
+
+    public Element createElementForDocument(Document doc, SimpleNamespaceContext context) {
+
+        SimpleNamespaceContext.Namespace namespace = context.addNamespace("http://www.domoroboto.com", "korey");
+        String uri = namespace.uri;
+        String prefix = namespace.prefix;
+
+        Element element = doc.createElementNS(uri, prefix + ":slide");
+        element.setAttribute("type", type);
+
+        Element titleElement = doc.createElementNS(uri, prefix + ":title");
+        titleElement.appendChild(doc.createTextNode(title));
+        element.appendChild(titleElement);
+
+        if (items != null) {
+            for (String item: items) {
+                Element itemElement = doc.createElementNS(uri, prefix + ":item");
+                itemElement.appendChild(doc.createTextNode(item));
+                element.appendChild(itemElement);
+            }
+        }
+
+        return element;
     }
 }
