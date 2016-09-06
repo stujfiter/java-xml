@@ -7,13 +7,27 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import javax.xml.xpath.XPathExpressionException; 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 public class HelloXPath {
 
 	public static void main(String[] args) {
 
-		Document doc = createDocument("person.xml");
+        Person korey = new Person();
+        korey.setId(1);
+        korey.setName("Korey");
+        korey.setAge(37);
+
+        Child audrey = new Child();
+        audrey.setName("Audrey");
+        audrey.setAge(1);
+        korey.getChildren().add(audrey);
+
+        String fileName = "person-xpath.xml";
+        new HelloXPath().marshalPersonXPath(korey, fileName);
+
+        Document doc = createDocument(fileName);
 		if (doc != null) {
 
 			XPath xpath = XPathFactory.newInstance().newXPath();
@@ -41,4 +55,26 @@ public class HelloXPath {
 
         return doc;
 	}
+
+    public void marshalPersonXPath(Person person, String fileName) {
+        try {
+            XmlProcessor xmlProcessor = new XmlProcessor();
+            Document doc = xmlProcessor.newDocument();
+
+            SimpleNamespaceContext context = new SimpleNamespaceContext();
+
+            Element personElement = person.createElementForDocument(doc, context);
+
+            for (SimpleNamespaceContext.Namespace ns : context.getNamespaces()) {
+                personElement.setAttribute("xmlns:" + ns.prefix, ns.uri);
+            }
+
+            doc.appendChild(personElement);
+
+            xmlProcessor.transform(doc, fileName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
