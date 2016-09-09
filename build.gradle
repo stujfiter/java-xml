@@ -9,4 +9,4 @@ dependencies {
 	compile group: 'org.apache.cxf', name: 'cxf-bundle-jaxrs', version: '2.7.18'
 }
 
-mainClassName = "HelloCxf"
+mainClassName = "Hello"

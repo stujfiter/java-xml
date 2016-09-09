@@ -1,6 +1,10 @@
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(name="child", propOrder = {"name", "age"})
 public class Child {
 	private String name;
 	private int age;
@@ -9,6 +13,7 @@ public class Child {
 		this.name = name;
 	}
 
+	@XmlElement(namespace = "http://www.domoroboto.com")
 	public String getName() {
 		return this.name;
 	}
@@ -17,6 +22,7 @@ public class Child {
 		this.age = age;
 	}
 
+	@XmlElement(namespace = "http://www.domoroboto.com")
 	public int getAge() {
 		return this.age;
 	}
@@ -24,12 +30,12 @@ public class Child {
 	public Element createElementForDocument(Document doc, SimpleNamespaceContext context) {
 
 		SimpleNamespaceContext.Namespace namespace = context.addNamespace("http://www.domoroboto.com/child", "dc");
-		
+
 		String uri = namespace.uri;
 		String prefix = namespace.prefix;
-		
+
 		Element childElement = doc.createElementNS(uri, prefix + ":child");
-		
+
 		Element nameElement = doc.createElementNS(uri, prefix + ":name");
 		nameElement.appendChild(doc.createTextNode(name));
 		childElement.appendChild(nameElement);

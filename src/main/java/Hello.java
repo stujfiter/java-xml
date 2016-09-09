@@ -1,8 +1,13 @@
 import java.io.File;
+import java.math.BigInteger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
+import com.domoroboto.Children;
+import com.domoroboto.PersonXjc;
+import com.domoroboto.Child;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -10,28 +15,36 @@ public class Hello {
 	public static void main(String[] args) {
 		Child audrey = new Child();
 		audrey.setName("Audrey");
-		audrey.setAge(1);
+		audrey.setAge(BigInteger.valueOf(1));
 
-		Person korey = new Person();
+		Child lucy = new Child();
+		lucy.setName("Lucy");
+		lucy.setAge(BigInteger.valueOf(3));
+
+		PersonXjc korey = new PersonXjc();
 		korey.setName("Korey");
-		korey.setAge(36);
-		korey.setId(27);
-		korey.getChildren().add(audrey);
+		korey.setAge(BigInteger.valueOf(36));
+		korey.setId(BigInteger.valueOf(27));
 
-		marshalPersonXPath(korey, "person-with-ns.xml");
+        Children children = new Children();
+        korey.setChildren(children);
+		korey.getChildren().getChild().add(audrey);
+		korey.getChildren().getChild().add(lucy);
+
+//		marshalPersonXPath(korey, "person-with-ns.xml");
 		marshalPerson(korey, "person-jaxb.xml");
 
-		Person p = unmarshalPerson("person-jaxb.xml");
+//		Person p = unmarshalPerson("person-jaxb.xml");
 
-		System.out.println("Hello, " + p.getName() + "!");
+//		System.out.println("Hello, " + p.getName() + "!");
 		
 	}
 
-	public static void marshalPerson(Person person, String fileName) {
+	public static void marshalPerson(PersonXjc person, String fileName) {
 		
 		try {
 			File f = new File(fileName);
-			JAXBContext context = JAXBContext.newInstance(Person.class);
+			JAXBContext context = JAXBContext.newInstance(PersonXjc.class);
 			Marshaller marshaller = context.createMarshaller();
 
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -42,28 +55,28 @@ public class Hello {
 	
 	}
 
-	public static void marshalPersonXPath(Person person, String fileName) {
-		try {
-			XmlProcessor xmlProcessor = new XmlProcessor();
-			Document doc = xmlProcessor.newDocument();
-
-			SimpleNamespaceContext context = new SimpleNamespaceContext();
-
-			Element personElement = person.createElementForDocument(doc, context);
-			
-			for (SimpleNamespaceContext.Namespace ns : context.getNamespaces()) {
-				personElement.setAttribute("xmlns:" + ns.prefix, ns.uri);
-			}
-
-			doc.appendChild(personElement);
-
-			xmlProcessor.transform(doc, fileName);
-
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
-	}
+//	public static void marshalPersonXPath(Person person, String fileName) {
+//		try {
+//			XmlProcessor xmlProcessor = new XmlProcessor();
+//			Document doc = xmlProcessor.newDocument();
+//
+//			SimpleNamespaceContext context = new SimpleNamespaceContext();
+//
+//			Element personElement = person.createElementForDocument(doc, context);
+//
+//			for (SimpleNamespaceContext.Namespace ns : context.getNamespaces()) {
+//				personElement.setAttribute("xmlns:" + ns.prefix, ns.uri);
+//			}
+//
+//			doc.appendChild(personElement);
+//
+//			xmlProcessor.transform(doc, fileName);
+//
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	public static Person unmarshalPerson(String fileName) {
 		Person p = null;

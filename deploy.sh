@@ -1,2 +1,2 @@
 gradle build
-java -cp build/classes/main HelloCxf
+java -cp build/classes/main Hello

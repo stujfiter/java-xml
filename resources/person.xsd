@@ -1,18 +1,32 @@
 <?xml version="1.0"?>
-<xs:schema 
-	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	targetNamespace="http://www.domoroboto.com"
-	elementFormDefault="qualified"
-	attributeFormDefault="qualified">
+<xs:schema
+		xmlns:xs="http://www.w3.org/2001/XMLSchema"
+		targetNamespace="http://www.domoroboto.com"
+		xmlns:domo="http://www.domoroboto.com"
+		elementFormDefault="qualified"
+		attributeFormDefault="qualified">
 
 	<xs:element name="person">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="name" type="xs:string" />
 				<xs:element name="age" type="xs:positiveInteger"/>
-				<xs:any maxOccurs="2" minOccurs="0" namespace="http://www.domoroboto.com" /> 
+				<xs:element name="children" type="domo:children" minOccurs="0"/>
 			</xs:sequence>
 			<xs:attribute name="id" type="xs:positiveInteger" use="required"/>
-		</xs:complexType>		
-	</xs:element>	
+		</xs:complexType>
+	</xs:element>
+
+    <xs:complexType name="children">
+        <xs:sequence>
+            <xs:element name="child" type="domo:child" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="child">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="age" type="xs:positiveInteger"/>
+		</xs:sequence>
+	</xs:complexType>
 </xs:schema>

@@ -1,29 +1,38 @@
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(namespace = "http://www.domoroboto.com")
-@XmlType(propOrder = { "name", "age"})
+@XmlType(propOrder = { "name", "age", "children"})
+
 public class Person {
 
 	public static final String NAMESPACE = "http://www.domoroboto.com";
 
-	private String name;
-	private int age;
-	private int id;
-	private List<Child> children = new ArrayList<>();
+    @XmlAttribute(namespace = NAMESPACE)
+    private int id;
 
-	
+    @XmlElement(namespace = NAMESPACE)
+    protected String name;
+
+    @XmlElement(namespace = NAMESPACE)
+    private int age;
+
+    @XmlElementWrapper(name="children", namespace = NAMESPACE)
+    @XmlElement(name="child", namespace = NAMESPACE)
+    private List<Child> children = new ArrayList<>();
+
+
+
 	public String getName() {
 		return name;
 	}
 
-	@XmlElement(namespace = NAMESPACE)
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -32,26 +41,27 @@ public class Person {
 		return age;
 	}
 
-	@XmlElement(namespace = NAMESPACE)
+
 	public void setAge(int age) {
 		this.age = age;
 	}
+
 
 	public int getId() {
 		return id;
 	}
 
-	@XmlAttribute(namespace = NAMESPACE)
 	public void setId(int id) {
 		this.id = id;
 	}
 
+
 	public List<Child> getChildren() {
 		return children;
-	}	
+	}
 
 	public Element createElementForDocument(Document doc, SimpleNamespaceContext context) {
-		
+
 		SimpleNamespaceContext.Namespace namespace = context.addNamespace("http://www.domoroboto.com", "domo");
 		String uri = namespace.uri;
 		String prefix = namespace.prefix;
@@ -59,7 +69,7 @@ public class Person {
 		Element personElement = doc.createElementNS(uri, prefix + ":person");
 		personElement.setAttribute("xmlns:" + prefix, uri);
 		personElement.setAttribute(prefix + ":id", Integer.toString(id));
-		
+
 		Element nameElement = doc.createElementNS(uri, prefix + ":name");
 		nameElement.appendChild(doc.createTextNode(name));
 		personElement.appendChild(nameElement);

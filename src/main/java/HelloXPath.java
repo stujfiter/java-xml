@@ -33,7 +33,7 @@ public class HelloXPath {
 			XPath xpath = XPathFactory.newInstance().newXPath();
 			String name = "";
 			try {
-				name = xpath.compile("/person/name").evaluate(doc);			
+				name = xpath.compile("/person/name").evaluate(doc);
 			} catch (XPathExpressionException e) {
 				e.printStackTrace();
 			}
